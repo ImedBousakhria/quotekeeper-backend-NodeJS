@@ -18,8 +18,15 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST a new note
-router.post("/", async (req, res) => {
-  // Implement logic to create a new note
+router.post("/notes", async (req, res) => {
+  try {
+    const { title, content, category } = req.body;
+    const note = await Note.create({ title, content, category });
+    res.status(201).json(note);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 // PUT/update a note by ID

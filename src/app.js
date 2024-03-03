@@ -16,7 +16,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Book API",
+      title: "Notes sharing app API",
       version: "1.0.0",
     },
   },
