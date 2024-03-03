@@ -2,30 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config(); // Load environment variables from .env file
 // Define routes
-const notesRouter = require("./routes/notes");
-const categoriesRouter = require("./routes/categories");
 
-const swaggerUi = require("swagger-ui-express");
-const YAML = require("yamljs");
-const swaggerJSDoc = require("swagger-jsdoc");
 
 // Create an Express application
 const app = express();
 // Generate OpenAPI specification
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Notes sharing app API",
-      version: "1.0.0",
-    },
-  },
-  apis: ["./app.js"], // Path to the file that contains your API routes
-};
 
-const swaggerSpec = swaggerJSDoc(options);
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
@@ -42,6 +24,10 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
+
+const notesRouter = require("./routes/notes");
+const categoriesRouter = require("./routes/categories");
+// Routes
 app.use("/notes", notesRouter);
 app.use("/categories", categoriesRouter);
 
@@ -50,3 +36,27 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+
+
+
+// const swaggerUi = require("swagger-ui-express");
+// const YAML = require("yamljs");
+// const swaggerJSDoc = require("swagger-jsdoc");
+// const options = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info: {
+//       title: "Notes sharing app API",
+//       version: "1.0.0",
+//     },
+//   },
+//   apis: ["./routes/*.js"], // Path to the file that contains your API routes
+// };
+
+// const swaggerSpec = swaggerJSDoc(options);
+
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// console.log(swaggerSpec)
