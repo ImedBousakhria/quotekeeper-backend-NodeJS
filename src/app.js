@@ -5,8 +5,14 @@ require("dotenv").config(); // Load environment variables from .env file
 const notesRouter = require("./routes/notes");
 const categoriesRouter = require("./routes/categories");
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./path/to/your/openapi.yaml');
+
 // Create an Express application
 const app = express();
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
