@@ -45,7 +45,7 @@ router.post("/post_note", async (req, res) => {
 });
 
 // PUT/ update a note
-router.put("/:id", async (req, res) => {
+router.put("/update_note/:id", async (req, res) => {
   const updates = req.body;
   const id = req.params.id;
 
@@ -59,7 +59,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE /api/notes/:id - delete a note based on the given id
-router.delete('/:id', async (req, res) => {
+router.delete('/delete_note/:id', async (req, res) => {
   const id = req.params.id;
 
   try {
