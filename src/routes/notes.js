@@ -68,7 +68,7 @@ router.delete('/delete_note/:id', async (req, res) => {
       return res.status(404).json({message:"No note with this id!"})
     }
     
-    await Note.remove({_id: id});
+    await Note.deleteOne({_id: id});
     res.status(200).json({message:'Deleted the note'});
   }catch{
     res.status(500).json({message: 'Failed to delete the note.'})
