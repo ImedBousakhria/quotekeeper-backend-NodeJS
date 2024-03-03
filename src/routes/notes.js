@@ -15,7 +15,13 @@ router.get("/", async (req, res) => {
 
 // GET a single note by ID
 router.get("/:id", async (req, res) => {
-  // Implement logic to find a single note by its ID
+  try {
+    const note = await Note.findById(req.params.id);
+    if (!note) return res.status(404).json({ message: "No note with that id" });
+    res.json(note);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // POST a new note
@@ -38,14 +44,36 @@ router.post("/post_note", async (req, res) => {
   }
 });
 
-// PUT/update a note by ID
+// PUT/ update a note
 router.put("/:id", async (req, res) => {
-  // Implement logic to update an existing note by its ID
+  const updates = req.body;
+  const id = req.params.id;
+
+  try {
+    const note = await Note.findByIdAndUpdate(id, updates, { new: true });
+    if (!note) return res.status(404).json({ message: "No note with this id!" });
+    res.json(note);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
-// DELETE a note by ID
-router.delete("/:id", async (req, res) => {
-  // Implement logic to delete a note by its ID
+// DELETE /api/notes/:id - delete a note based on the given id
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const noteData = await Note.findById(id);
+    if(!noteData){
+      return res.status(404).json({message:"No note with this id!"})
+    }
+    
+    await Note.remove({_id: id});
+    res.status(200).json({message:'Deleted the note'});
+  }catch{
+    res.status(500).json({message: 'Failed to delete the note.'})
+  }
+  
 });
 
 module.exports = router;
