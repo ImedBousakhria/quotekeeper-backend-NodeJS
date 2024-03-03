@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Note = require("../models/Note");
+const Category = require("../models/Category")
 
 // GET all notes
 router.get("/", async (req, res) => {
@@ -18,10 +19,18 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST a new note
-router.post("/notes", async (req, res) => {
+router.post("/post_note", async (req, res) => {
+  const { title, content, category: categoryName } = req.body;
+
   try {
-    const { title, content, category } = req.body;
-    const note = await Note.create({ title, content, category });
+    // Find category by name
+    const category = await Category.findOne({ name: categoryName });
+
+    if (!category) {
+      // return res.status(400).json({ message: "Category not found" });
+    }
+
+    const note = await Note.create({ title, content, category: category ? category._id : null });
     res.status(201).json(note);
   } catch (error) {
     console.error(error);
