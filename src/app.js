@@ -5,14 +5,27 @@ require("dotenv").config(); // Load environment variables from .env file
 const notesRouter = require("./routes/notes");
 const categoriesRouter = require("./routes/categories");
 
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./path/to/your/openapi.yaml');
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerJSDoc = require("swagger-jsdoc");
 
 // Create an Express application
 const app = express();
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Generate OpenAPI specification
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Book API",
+      version: "1.0.0",
+    },
+  },
+  apis: ["./app.js"], // Path to the file that contains your API routes
+};
 
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
