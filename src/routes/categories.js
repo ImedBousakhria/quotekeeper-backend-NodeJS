@@ -26,20 +26,22 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST a new category
-router.post("/", async (req, res) => {
+router.post("/post_category", async (req, res) => {
   const category = new Category({
     name: req.body.name
   });
   try {
-    const newCategory = await category.save();
-    res.status(201).json(newCategory);
+    const new_category = await Category.create(category);
+    // or :   const newCategory = await category.save();
+
+    res.status(201).json(new_category);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // PUT/update a category by ID
-router.put("/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
@@ -64,7 +66,6 @@ router.delete("/:id", async (req, res) => {
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
-    await category.remove();
     await category.deleteOne({_id: id})
     res.json({ message: "Category deleted" });
   } catch (err) {
