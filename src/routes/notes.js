@@ -58,7 +58,7 @@ router.put("/update_note/:id", async (req, res) => {
     }
 });
 
-// DELETE /api/notes/:id - delete a note based on the given id
+// DELETE /notes/delete_note/:id - delete a note based on the given id
 router.delete('/delete_note/:id', async (req, res) => {
   const id = req.params.id;
 

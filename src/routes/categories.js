@@ -4,27 +4,69 @@ const Category = require("../models/Category");
 
 // GET all categories
 router.get("/", async (req, res) => {
-  // Implement logic to get all categories
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // GET a single category by ID
 router.get("/:id", async (req, res) => {
-  // Implement logic to find a single category by its ID
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    res.json(category);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // POST a new category
 router.post("/", async (req, res) => {
-  // Implement logic to create a new category
+  const category = new Category({
+    name: req.body.name
+  });
+  try {
+    const newCategory = await category.save();
+    res.status(201).json(newCategory);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // PUT/update a category by ID
 router.put("/:id", async (req, res) => {
-  // Implement logic to update an existing category by its ID
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    if (req.body.name != null) {
+      category.name = req.body.name;
+    }
+    const updatedCategory = await category.save();
+    res.json(updatedCategory);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // DELETE a category by ID
 router.delete("/:id", async (req, res) => {
-  // Implement logic to delete a category by its ID
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    await category.remove();
+    res.json({ message: "Category deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
