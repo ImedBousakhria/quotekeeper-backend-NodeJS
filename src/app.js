@@ -27,9 +27,11 @@ mongoose
 
 const notesRouter = require("./routes/notes");
 const categoriesRouter = require("./routes/categories");
+const tagsRouter = require("./routes/tags")
 // Routes
 app.use("/notes", notesRouter);
 app.use("/categories", categoriesRouter);
+app.use("/tags", tagsRouter)
 
 // Start the server
 const PORT = process.env.PORT || 3000;

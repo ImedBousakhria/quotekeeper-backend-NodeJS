@@ -13,7 +13,7 @@ router.get("/all_tags", async (req, res) => {
 });
 
 // GET a single tag by ID
-router.get("/:id", async (req, res) => {
+router.get("/get_tag/:id", async (req, res) => {
   try {
     const tag = await Tag.findById(req.params.id);
     if (!tag) return res.status(404).json({ message: "No tag with that id" });
@@ -54,7 +54,7 @@ router.put("/update/:id", async (req, res) => {
 });
 
 // delete a tag by its `id` value
-router.delete("/:id", validateTagId, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     await Tag.deleteOne({ _id: req.params.id });
     res.status(200).json({ message: "Tag has been deleted" });
@@ -62,3 +62,5 @@ router.delete("/:id", validateTagId, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+module.exports = router
