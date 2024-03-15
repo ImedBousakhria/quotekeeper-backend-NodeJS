@@ -24,14 +24,16 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-
-const notesRouter = require("./routes/notes");
+const usersRouter = require("./routes/user");
+const quotesRouter = require("./routes/quotes");
 const categoriesRouter = require("./routes/categories");
 const tagsRouter = require("./routes/tags")
 // Routes
-app.use("/notes", notesRouter);
+app.use("/quotes", quotesRouter);
 app.use("/categories", categoriesRouter);
 app.use("/tags", tagsRouter)
+app.use("/users", usersRouter)
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
